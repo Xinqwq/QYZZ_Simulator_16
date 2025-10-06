@@ -4,14 +4,29 @@
 
 ---
 
-## ✨ 功能 Features
-- ⌚ 实时算分：盗印/负重/月光番数与触发次数的传导链计算
-- 🔮 未来关卡预测：展示“通过/败北”关卡，紧凑徽章式显示
-- 🔢 中国大数单位：科学计数法与中文大数字双显示（支持 e+1000）
-- 🎨 UI 优化：可拖拽调整区块宽度、主题适配、统一表格样式
-- 💾 历史配置：本地存储/读取多份配置，命名保存与删除
-- 🖥️ 桌面版：Electron 本地后端 + 前端同源加载，离线可用
+## ✨ 功能
 
+1. 🎨**配色方案**
+   - 支持7种主题
+2. 🔮**关卡配置与印章设置**
+   - 9个可折叠配置区块，支持显示/隐藏
+   - 区块选择器与关卡选择（1-1 到 Ex120）
+   - 最终番数、小分分值、盗印/负重/月光番数配置
+   - 数据表格统一样式，支持三种数值显示格式（纯数字/科学计数法/大数字）
+   - 支持 e+1000 超大数字显示与计算
+3. 🔢**关卡目标分管理**
+   - 分页展示，每页6项
+   - 单行/两栏布局切换
+   - 手动输入番数，沿用/取消沿用上一关数据
+   - 配置管理：历史配置下拉存储、删除、反馈提示
+4. ⌚**悬浮计算结果窗**
+   - 独立悬浮窗模式，可自由拖拽、显示/隐藏
+   - 显示当前总得分、理论最高得分、目标分对比
+   - 分解显示番数与触发次数
+5. 💾**未来关卡预测功能**
+   - 智能预测未来关卡能否通过（测试阶段，有问题及时反馈）
+   - 支持超大数字计算与科学计数法/大数字显示
+   - 实时更新预测结果，显示最后能通过关卡与第一个无法通过关卡
 ---
 
 ## 📦 安装与运行
@@ -25,8 +40,6 @@ npm i -D electron electron-builder @electron/get concurrently
 ```
 npm run dev:electron
 ```
-
-产物在 `dist/青云之志算分小助手 x.y.z.exe`。
 
 ---
 
@@ -44,12 +57,18 @@ QYZZ_Simulator_16/
 
 ---
 
-## 📥 下载 Download
-- Windows exe版：/青云之志算分小助手 1.0.0.exe
+## 📥 下载
+Windows exe版：青云之志算分小助手[QYZZ_Simulator_16_1.0.0.exe](https://github.com/Xinqwq/QYZZ_Simulator_16/releases/download/v1.0.0/QYZZ_Simulator_16_1.0.0.exe)
+Windows zip版：青云之志算分小助手[QYZZ_Simulator_16_1.0.0.zip](https://github.com/Xinqwq/QYZZ_Simulator_16/releases/download/v1.0.0/QYZZ_Simulator_16_1.0.0.zip)
 
+##### 可选
+校验值：
+```PowerShell
+Get-FileHash "QYZZ_Simulator_16_1.0.0.exe" -Algorithm SHA256
+```
 ---
 
-## 🖼️ 截图 Screenshots
+## 🖼️ 截图 
 
 
 ---
@@ -61,6 +80,6 @@ QYZZ_Simulator_16/
 
 ---
 
-## 👩‍💻 作者 Author
+## 👩‍💻 作者
 - 开发与维护: [@Xinqwq](https://github.com/Xinqwq)
-
+- 感谢《青云之志》玩家qq群各位的反馈与建议
