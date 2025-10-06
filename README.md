@@ -27,6 +27,27 @@
    - 智能预测未来关卡能否通过（测试阶段，有问题及时反馈）
    - 支持超大数字计算与科学计数法/大数字显示
    - 实时更新预测结果，显示最后能通过关卡与第一个无法通过关卡
+
+---
+
+
+## 🖼️ 截图 
+
+---
+
+## 📥 下载
+##### Windows exe版：
+青云之志算分小助手[QYZZ_Simulator_16_1.0.0.exe](https://github.com/Xinqwq/QYZZ_Simulator_16/releases/download/v1.0.0/QYZZ_Simulator_16_1.0.0.exe)
+
+##### Windows zip版：
+青云之志算分小助手[QYZZ_Simulator_16_1.0.0.zip](https://github.com/Xinqwq/QYZZ_Simulator_16/releases/download/v1.0.0/QYZZ_Simulator_16_1.0.0.zip)
+
+##### 可选
+校验值：
+```PowerShell
+Get-FileHash "QYZZ_Simulator_16_1.0.0.exe" -Algorithm SHA256
+```
+
 ---
 
 ## 📦 安装与运行
@@ -54,21 +75,6 @@ QYZZ_Simulator_16/
   package.json
   README.md
 ```
-
----
-
-## 📥 下载
-Windows exe版：青云之志算分小助手[QYZZ_Simulator_16_1.0.0.exe](https://github.com/Xinqwq/QYZZ_Simulator_16/releases/download/v1.0.0/QYZZ_Simulator_16_1.0.0.exe)
-Windows zip版：青云之志算分小助手[QYZZ_Simulator_16_1.0.0.zip](https://github.com/Xinqwq/QYZZ_Simulator_16/releases/download/v1.0.0/QYZZ_Simulator_16_1.0.0.zip)
-
-##### 可选
-校验值：
-```PowerShell
-Get-FileHash "QYZZ_Simulator_16_1.0.0.exe" -Algorithm SHA256
-```
----
-
-## 🖼️ 截图 
 
 
 ---
