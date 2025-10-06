@@ -92,14 +92,14 @@ QYZZ_Simulator_16/
 
 ---
 
+<p align="center">
+  <a href="https://count.getloli.com" target="_blank">
+    <img alt="QYZZ_Simulator_16" src="https://count.getloli.com/@Xinqwq.github.QYZZ_Simulator_16?name=QYZZ_Simulator_16&theme=booru-lewd&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto">
+  </a>
+</p>
+<p align="center">
+  <a href="https://count.getloli.com" target="_blank">
+    <img alt="QYZZ_Simulator_16" src="https://count.getloli.com/@Xinqwq.github.QYZZ_Simulator_16?name=QYZZ_Simulator_16&theme=booru-mjg&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto">
+  </a>
+</p>
 
-<p align="center">
-  <a href="https://count.getloli.com" target="_blank">
-    <img alt="Kelsi" src="https://count.getloli.com/@Xinqwq.github?name=Xinqwq.github&theme=booru-lewd&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto">
-  </a>
-</p>
-<p align="center">
-  <a href="https://count.getloli.com" target="_blank">
-    <img alt="Kelsi" src="https://count.getloli.com/@Xinqwq.github?name=Xinqwq.github&theme=booru-mjg&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto">
-  </a>
-</p>
