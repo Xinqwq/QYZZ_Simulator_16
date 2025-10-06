@@ -1,0 +1,45 @@
+{
+  "name": "qyzz-simulator-16",
+  "version": "1.0.0",
+  "main": "electron/main.js",
+  "author": "16Bushilu",
+  "scripts": {
+    "dev:electron": "electron .",
+    "build:win:portable": "electron-builder --win portable",
+    "build:win:nsis": "electron-builder --win nsis"
+  },
+  "build": {
+    "appId": "com.yourname.qyzz",
+    "productName": "青云之志算分小助手",
+    "files": [
+      "electron/**",
+      "frontend/**",
+      "backend/**",
+      "package.json"
+    ],
+    "extraResources": [
+      "backend/**",
+      "frontend/**"
+    ],
+    "asar": true,
+    "forceCodeSigning": false,
+    "win": {
+      "target": [
+        { "target": "portable", "arch": ["x64"] },
+        { "target": "nsis", "arch": ["x64"] }
+      ],
+      "icon": "assets/16.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false
+    }
+  },
+  "devDependencies": {
+    "@electron/get": "^4.0.2",
+    "concurrently": "^9.2.1",
+    "electron": "^30.5.1",
+    "electron-builder": "^24.13.3"
+  }
+}
