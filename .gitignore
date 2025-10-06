@@ -38,3 +38,5 @@ logs/
 # Env & secrets (placeholder)
 .env
 .env.*
+
+Project开发记录.md
