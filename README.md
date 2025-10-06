@@ -89,3 +89,17 @@ QYZZ_Simulator_16/
 ## 👩‍💻 作者
 - 开发与维护: [@Xinqwq](https://github.com/Xinqwq)
 - 感谢《青云之志》玩家qq群各位的反馈与建议
+
+---
+
+
+<p align="center">
+  <a href="https://count.getloli.com" target="_blank">
+    <img alt="Kelsi" src="https://count.getloli.com/@Xinqwq.github?name=Xinqwq.github&theme=booru-lewd&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto">
+  </a>
+</p>
+<p align="center">
+  <a href="https://count.getloli.com" target="_blank">
+    <img alt="Kelsi" src="https://count.getloli.com/@Xinqwq.github?name=Xinqwq.github&theme=booru-mjg&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto">
+  </a>
+</p>
