@@ -1,3 +1,4 @@
+<!-- Author: 16@Xinqwq -->
 <!doctype html>
 <html lang="zh-CN">
   <head>
@@ -6,19 +7,19 @@
     <title>青云之志 算分器</title>
     <style>
       :root{
-        --bg:#F2F2F0;        /* 雾灰 */
-        --text:#3F3F3A;      /* 暖灰 */
-        --muted:#7C7C75;     /* 次文本 */
-        --card:#FFFFFF;      /* 卡片底 */
-        --line:#E1E1DC;      /* 线条 */
-        --primary:#9AA3A0;   /* 莫兰迪绿灰 */
+        --bg:#F2F2F0;        
+        --text:#3F3F3A;      
+        --muted:#7C7C75;     
+        --card:#FFFFFF;      
+        --line:#E1E1DC;      
+        --primary:#9AA3A0;  
         --primary-strong:#6F7976;
-        --accent:#C4B7A6;    /* 莫兰迪米杏 */
+        --accent:#C4B7A6;    
         --accent-light:rgba(196, 183, 166, 0.1);  /* 浅色强调 */
         --accent-hover:rgba(196, 183, 166, 0.2);  /* 悬停强调 */
-        --ok:#B7D0C5;        /* 莫兰迪绿 */
-        --warn:#E3C9A8;      /* 莫兰迪杏 */
-        --danger:#D9B8B6;    /* 莫兰迪粉 */
+        --ok:#B7D0C5;        
+        --warn:#E3C9A8;      
+        --danger:#D9B8B6;    
         --radius:10px;
         --gap:0px;
         /* 次数列样式变量 */
@@ -486,7 +487,7 @@
       .card-toggle:hover { background: var(--line); color: var(--text); }
       .card-content { transition: all 0.3s ease; overflow: hidden; }
       .card-content.collapsed { max-height: 0; opacity: 0; margin: 0; padding: 0; }
-      /* 修复：配置大区容器在展开时允许内容溢出可见，防止右侧被裁剪 */
+      /* 在展开时允许内容溢出可见，防止右侧被裁剪 */
       #config-content { overflow: visible; }
       #config-content.collapsed { overflow: hidden; }
       label { display: block; font-size: 12px; color: var(--muted); margin-top: 8px; }
