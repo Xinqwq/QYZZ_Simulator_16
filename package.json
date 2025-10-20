@@ -1,25 +1,26 @@
 {
   "name": "qyzz-simulator-16",
-  "version": "1.0.0",
-  "main": "electron/main.js",
+  "version": "2.0.0",
+  "main": "backend/index.js",
   "author": "16Bushilu",
   "scripts": {
-    "dev:electron": "electron .",
-    "build:win:portable": "electron-builder --win portable",
-    "build:win:nsis": "electron-builder --win nsis"
+    "start": "node backend/index.js",
+    "dev": "npm run dev:backend",
+    "dev:backend": "cd backend && node index.js",
+    "install:all": "npm install && cd backend && npm install"
   },
   "build": {
     "appId": "com.yourname.qyzz",
     "productName": "青云之志算分小助手",
     "files": [
       "electron/**",
-      "frontend/**",
+      "frontend/build/**",
       "backend/**",
       "package.json"
     ],
     "extraResources": [
       "backend/**",
-      "frontend/**"
+      "frontend/build/**"
     ],
     "asar": true,
     "forceCodeSigning": false,
@@ -37,9 +38,6 @@
     }
   },
   "devDependencies": {
-    "@electron/get": "^4.0.2",
-    "concurrently": "^9.2.1",
-    "electron": "^30.5.1",
-    "electron-builder": "^24.13.3"
+    "concurrently": "^9.2.1"
   }
 }

@@ -1,0 +1,50 @@
+{
+  "name": "qyzz-simulator-electron",
+  "version": "2.0.0",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "build:win:nsis": "electron-builder --win nsis",
+    "build:win:portable": "electron-builder --win portable"
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "me.luloria.qyzz",
+    "productName": "青云之志算分小助手",
+    "directories": {
+      "output": "../dist"
+    },
+    "files": [
+      "main.js"
+    ],
+    "extraResources": [
+      { "from": "../backend", "to": "backend" },
+      { "from": "../frontend_backup", "to": "frontend_backup" },
+      { "from": "../assets", "to": "assets" }
+    ],
+    "asar": true,
+    "win": {
+      "icon": "../assets/16.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "青云之志算分小助手Setup${version}.exe"
+    },
+    "portable": {
+      "artifactName": "青云之志算分小助手Portable${version}.exe"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false
+    }
+  }
+}
+
+

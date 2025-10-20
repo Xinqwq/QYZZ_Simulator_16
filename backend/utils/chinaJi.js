@@ -1,3 +1,4 @@
+// Author: 16@Xinqwq
 const Decimal = require('decimal.js');
 
 const units = ["万","亿","兆","京","垓","秭","穰","沟","涧","正","载","极"];

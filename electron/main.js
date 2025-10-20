@@ -18,7 +18,7 @@ if (!gotTheLock) {
     }
   });
 }
-const BACKEND_PORT = process.env.PORT || 4001;
+const BACKEND_PORT = process.env.PORT || 6001;
 
 // function startBackend() {
 //   const runPath = app.isPackaged ? process.resourcesPath : app.getAppPath();
@@ -89,15 +89,31 @@ async function waitForBackendReady(maxMs = 4000) {
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 1280,
-    height: 800,
-    webPreferences: { nodeIntegration: false, contextIsolation: true, webSecurity: false }
+    width: 1400,
+    height: 900,
+    webPreferences: { 
+      nodeIntegration: false, 
+      contextIsolation: true, 
+      webSecurity: false,
+      enableRemoteModule: false
+    },
+    title: '青云之志算分小助手',
+    icon: path.join(__dirname, '../assets/16.ico')
   });
 
-  // 统一使用同源地址加载页面，避免 file:// 渲染异常与跨源限制
-  const indexUrl = `http://127.0.0.1:${BACKEND_PORT}/`;
+  // 开发环境加载React开发服务器，生产环境加载后端静态文件
+  const isDev = !app.isPackaged;
+  const indexUrl = isDev 
+    ? 'http://localhost:8080'  // React开发服务器
+    : `http://127.0.0.1:${BACKEND_PORT}/`;  // 后端静态文件
+  
   win.loadURL(indexUrl);
   mainWindow = win;
+
+  // 开发环境打开开发者工具
+  if (isDev) {
+    win.webContents.openDevTools();
+  }
 }
 
 app.whenReady().then(async () => {

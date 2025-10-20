@@ -1,0 +1,149 @@
+.result-window {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.result-window.floating {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  min-width: 300px;
+  max-width: 400px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.result-header {
+  background: var(--accent-light);
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--line);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.result-header h3 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--primary-strong);
+  font-weight: 600;
+}
+
+.result-content {
+  padding: 15px;
+}
+
+.score-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.score-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--accent-light);
+  border-radius: 6px;
+}
+
+.score-item label {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.score-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-strong);
+}
+
+.score-value.theoretical {
+  color: var(--ok);
+}
+
+.score-value.target {
+  color: var(--warn);
+}
+
+.breakdown {
+  border-top: 1px solid var(--line);
+  padding-top: 15px;
+}
+
+.breakdown h4 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  color: var(--primary-strong);
+  font-weight: 600;
+}
+
+.breakdown-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.breakdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--accent-light);
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.breakdown-label {
+  min-width: 40px;
+  color: var(--muted);
+}
+
+.breakdown-value {
+  flex: 1;
+  font-weight: 600;
+  color: var(--primary-strong);
+}
+
+.breakdown-count {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.loading,
+.error,
+.no-result {
+  text-align: center;
+  padding: 20px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.error {
+  color: var(--danger);
+}
+
+@media (max-width: 480px) {
+  .result-window.floating {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    transform: none;
+    max-width: none;
+  }
+  
+  .score-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  .breakdown-item {
+    flex-wrap: wrap;
+  }
+}

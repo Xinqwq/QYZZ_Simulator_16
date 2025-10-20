@@ -3,11 +3,7 @@
 # Node / npm
 node_modules/
 **/node_modules/
-package-lock.json
-**/package-lock.json
 npm-debug.log*
-yarn.lock
-pnpm-lock.yaml
 
 # Build outputs
 /dist/
@@ -18,9 +14,16 @@ pnpm-lock.yaml
 **/*.exe
 /*.msi
 **/*.msi
+*.7z
+**/*.7z
+*.zip
+**/*.zip
+*.asar
+**/*.asar
 
 # Electron builder cache (local cache)
 .cache/
+*.blockmap
 
 # OS files
 .DS_Store
@@ -30,13 +33,31 @@ Thumbs.db
 .vscode/
 .idea/
 *.iml
+.eslintcache
 
 # Logs
 *.log
 logs/
+.pnpm-store/
+.temp/
+
+# OS
+.DS_Store
+Thumbs.db
 
 # Env & secrets (placeholder)
 .env
 .env.*
+!.env.example
+
+# Tests / coverage
+coverage/
 
 Project开发记录.md
+CHANGELOG.md
+VERSION_UPDATE.md
+PROJECT_STRUCTURE.md
+/docs/
+README_update.md
+/frontend_ori/README.md
+/frontend_backup/README.md
