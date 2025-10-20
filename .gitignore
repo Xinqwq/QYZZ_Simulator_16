@@ -53,11 +53,12 @@ Thumbs.db
 # Tests / coverage
 coverage/
 
+# docs
 Project开发记录.md
+PROJECT_STRUCTURE.md
 CHANGELOG.md
 VERSION_UPDATE.md
-PROJECT_STRUCTURE.md
-/docs/
 README_update.md
-/frontend_ori/README.md
+/docs/
+/frontend_ori/
 /frontend_backup/README.md
