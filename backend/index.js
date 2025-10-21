@@ -20,6 +20,75 @@ const app = express();
 // 在反向代理（如 Azure App Service）后正确获取协议/源
 app.set('trust proxy', 1);
 
+// 轻量访问统计（JSON 持久化）
+const DATA_DIR = path.join(__dirname, 'data');
+const ANALYTICS_FILE = path.join(DATA_DIR, 'analytics.json');
+
+function ensureAnalyticsStore() {
+  try {
+    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+    if (!fs.existsSync(ANALYTICS_FILE)) {
+      const initial = {
+        totalVisits: 0,
+        totalHits: 0,
+        visitors: {}, // vid -> { firstSeen, lastSeen, visits }
+        daily: {},    // 'YYYY-MM-DD' -> count
+        dailyHits: {},// 'YYYY-MM-DD' -> hits count
+        ips: {},      // ip -> hits
+        paths: {}     // path -> hits（页面加载次数）
+      };
+      fs.writeFileSync(ANALYTICS_FILE, JSON.stringify(initial, null, 2));
+    }
+  } catch (e) {
+    console.warn('[analytics] init failed:', e && e.message);
+  }
+}
+
+function readAnalytics() {
+  try {
+    const raw = fs.readFileSync(ANALYTICS_FILE, 'utf8');
+    const parsed = JSON.parse(raw);
+    // 兼容旧版本：补齐缺失字段
+    if (parsed == null || typeof parsed !== 'object') {
+      return { totalVisits: 0, totalHits: 0, visitors: {}, daily: {}, dailyHits: {}, ips: {}, paths: {} };
+    }
+    if (typeof parsed.totalVisits !== 'number') parsed.totalVisits = Number(parsed.totalVisits) || 0;
+    if (typeof parsed.totalHits !== 'number') parsed.totalHits = Number(parsed.totalHits) || 0;
+    if (!parsed.visitors || typeof parsed.visitors !== 'object') parsed.visitors = {};
+    if (!parsed.daily || typeof parsed.daily !== 'object') parsed.daily = {};
+    if (!parsed.dailyHits || typeof parsed.dailyHits !== 'object') parsed.dailyHits = {};
+    if (!parsed.ips || typeof parsed.ips !== 'object') parsed.ips = {};
+    if (!parsed.paths || typeof parsed.paths !== 'object') parsed.paths = {};
+    return parsed;
+  } catch (_) {
+    return { totalVisits: 0, totalHits: 0, visitors: {}, daily: {}, dailyHits: {}, ips: {}, paths: {} };
+  }
+}
+
+function writeAnalytics(data) {
+  try {
+    fs.writeFileSync(ANALYTICS_FILE, JSON.stringify(data, null, 2));
+  } catch (e) {
+    console.warn('[analytics] write failed:', e && e.message);
+  }
+}
+
+ensureAnalyticsStore();
+
+// 封装：记录一次页面命中（服务器侧）
+function recordHit(ip, p) {
+  try {
+    const nowIso = new Date().toISOString();
+    const day = nowIso.slice(0, 10);
+    const data = readAnalytics();
+    data.totalHits = (Number(data.totalHits) || 0) + 1;
+    data.dailyHits[day] = (Number(data.dailyHits[day]) || 0) + 1;
+    if (p) data.paths[p] = (Number(data.paths[p]) || 0) + 1;
+    if (ip) data.ips[String(ip)] = (Number(data.ips[String(ip)]) || 0) + 1;
+    writeAnalytics(data);
+  } catch (_) {}
+}
+
 // 动态CORS设置：开发放开，生产仅允许同源/白名单域
 const corsOptions = {
   origin: function (origin, callback) {
@@ -69,13 +138,30 @@ try {
   const publicAssets = path.join(__dirname, '..', 'assets');
   app.use('/assets', express.static(publicAssets));
   app.get('/', (_req, res) => {
+    // 服务器侧也记录一次命中，保证即使前端脚本未执行也有计数
+    try { recordHit(_req.ip, '/'); } catch(_) {}
     const indexPath = path.join(staticDir, 'index.html');
     res.sendFile(indexPath);
   });
-  // 兼容浏览器默认请求 /favicon.ico
+  // 兼容浏览器默认请求 /favicon.ico（优先使用前端内的 16.ico）
   app.get('/favicon.ico', (_req, res) => {
-    res.type('image/x-icon');
-    res.sendFile(path.join(publicAssets, '16.ico'));
+    try {
+      const baseDir = STATIC_DIR || path.join(__dirname, '..', 'frontend_backup');
+      const candidates = [
+        path.join(baseDir, 'src', 'assets', '16.ico'),
+        path.join(baseDir, 'favicon.ico')
+      ];
+      for (const p of candidates) {
+        if (fs.existsSync(p)) {
+          res.type('image/x-icon');
+          return res.sendFile(p);
+        }
+      }
+      // 没有可用图标时不报错，返回 204
+      return res.status(204).end();
+    } catch (_) {
+      return res.status(204).end();
+    }
   });
   
   console.log(`[static] serving from: ${staticDir}`);
@@ -94,7 +180,125 @@ app.get('/api/health', (_req, res) => {
 
 // 提供一个兜底的 fetch-rewrite.js（若页面引用了该脚本，不会 404，也不会改变逻辑）
 app.get('/fetch-rewrite.js', (_req, res) => {
-  res.type('application/javascript').send('(function(){/* noop */})();');
+  // 前端自动打点脚本
+  const code = `(() => {
+    try {
+      const key = 'qyzz_vid';
+      let vid = localStorage.getItem(key);
+      if (!vid) {
+        vid = Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+        localStorage.setItem(key, vid);
+      }
+
+      const dayKey = 'qyzz_ping_' + new Date().toISOString().slice(0, 10);
+
+      // 每次加载都上报 hit
+      try {
+        fetch('/api/analytics/hit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ vid: vid, path: location.pathname, ts: Date.now() }),
+          keepalive: true
+        }).catch(() => {});
+      } catch (e) {}
+
+      // 每日一次上报 ping（独立访客/日）
+      if (!localStorage.getItem(dayKey)) {
+        localStorage.setItem(dayKey, '1');
+        try {
+          fetch('/api/analytics/ping', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ vid: vid, path: location.pathname, ts: Date.now() }),
+            keepalive: true
+          }).catch(() => {});
+        } catch (e) {}
+      }
+    } catch (e) {}
+  })();`;
+  res.type('application/javascript').send(code);
+});
+
+// 兼容路径：/api/fetch-rewrite.js 也返回同样脚本
+app.get('/api/fetch-rewrite.js', (_req, res) => {
+  res.redirect(301, '/fetch-rewrite.js');
+});
+
+// 访问统计：上报
+app.post('/api/analytics/ping', (req, res) => {
+  try {
+    const { vid, path: p } = req.body || {};
+    const nowIso = new Date().toISOString();
+    const day = nowIso.slice(0, 10);
+
+    // 兜底 vid：基于 ip + ua 的弱标识（仅在未提供 vid 时）
+    const fallbackVid = `${req.ip || '0'}-${(req.headers['user-agent'] || '').slice(0, 60)}`;
+    const visitorId = String(vid || fallbackVid);
+
+    const data = readAnalytics();
+    data.totalVisits = (Number(data.totalVisits) || 0) + 1;
+
+    if (!data.visitors[visitorId]) {
+      data.visitors[visitorId] = { firstSeen: nowIso, lastSeen: nowIso, visits: 1 };
+    } else {
+      data.visitors[visitorId].lastSeen = nowIso;
+      data.visitors[visitorId].visits = (Number(data.visitors[visitorId].visits) || 0) + 1;
+    }
+
+    data.daily[day] = (Number(data.daily[day]) || 0) + 1;
+    if (p) data.paths[p] = (Number(data.paths[p]) || 0) + 1;
+
+    writeAnalytics(data);
+    // 返回汇总（不包含明细）
+    const uniqueVisitors = Object.keys(data.visitors).length;
+    return res.json({ ok: true, totalVisits: data.totalVisits, uniqueVisitors });
+  } catch (e) {
+    console.error('[analytics] ping error:', e && e.message);
+    return res.json({ ok: false });
+  }
+});
+
+// 访问统计：每次加载计数（含 IP）
+app.post('/api/analytics/hit', (req, res) => {
+  try {
+    const { vid, path: p } = req.body || {};
+    const nowIso = new Date().toISOString();
+    const day = nowIso.slice(0, 10);
+    const ip = (req.ip || '').toString();
+
+    const data = readAnalytics();
+    data.totalHits = (Number(data.totalHits) || 0) + 1;
+    data.dailyHits[day] = (Number(data.dailyHits[day]) || 0) + 1;
+    if (p) data.paths[p] = (Number(data.paths[p]) || 0) + 1;
+    if (ip) data.ips[ip] = (Number(data.ips[ip]) || 0) + 1;
+
+    writeAnalytics(data);
+    const uniqueIps = Object.keys(data.ips || {}).length;
+    res.json({ ok: true, totalHits: data.totalHits, uniqueIps });
+  } catch (e) {
+    console.error('[analytics] hit error:', e && e.message);
+    return res.json({ ok: false });
+  }
+});
+
+// 访问统计：汇总（不返回明细，保护隐私）
+app.get('/api/analytics/stats', (_req, res) => {
+  try {
+    const data = readAnalytics();
+    const uniqueVisitors = Object.keys(data.visitors || {}).length;
+    const uniqueIps = Object.keys(data.ips || {}).length;
+    res.json({
+      totalVisits: Number(data.totalVisits) || 0,
+      totalHits: Number(data.totalHits) || 0,
+      uniqueVisitors,
+      uniqueIps,
+      daily: data.daily || {},
+      dailyHits: data.dailyHits || {},
+      paths: data.paths || {}
+    });
+  } catch (e) {
+    res.json({ totalVisits: 0, totalHits: 0, uniqueVisitors: 0, uniqueIps: 0, daily: {}, dailyHits: {}, paths: {} });
+  }
 });
 
 // 兼容 Linux 大小写：将 /src/assets/music/*.MP3 映射到同名的 .mp3（若存在）

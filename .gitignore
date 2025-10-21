@@ -21,6 +21,9 @@ npm-debug.log*
 *.asar
 **/*.asar
 
+# Analytics data (runtime generated)
+backend/data/
+
 # Electron builder cache (local cache)
 .cache/
 *.blockmap
