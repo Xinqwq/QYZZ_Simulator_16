@@ -6,9 +6,13 @@
 
 ## ✨ 功能
 
+0. ♪ **播放器**
+   - 快来听青云之志的歌曲 ^ ^
 1. 🎨**配色方案**
    - 支持7种主题
 2. 🔮**关卡配置与印章设置**
+   - 新增王之召唤功能
+   - 新增适合黑客流派记录盗印吃印章次数的敲击功能
    - 9个可折叠配置区块，支持显示/隐藏
    - 区块选择器与关卡选择（1-1 到 Ex120）
    - 最终番数、小分分值、盗印/负重/月光番数配置
@@ -37,11 +41,9 @@
 ---
 
 ## 📥 下载
-##### Windows exe版：
-青云之志算分小助手[QYZZ_Simulator_16_1.0.0.exe](https://github.com/Xinqwq/QYZZ_Simulator_16/releases/download/v1.0.0/QYZZ_Simulator_16_1.0.0.exe)
 
 ##### Windows zip版：
-青云之志算分小助手[QYZZ_Simulator_16_1.0.0.zip](https://github.com/Xinqwq/QYZZ_Simulator_16/releases/download/v1.0.0/QYZZ_Simulator_16_1.0.0.zip)
+青云之志算分小助手[QYZZ_Simulator_16_2.0.0.zip](https://github.com/Xinqwq/QYZZ_Simulator_16/releases/download/v2.0.0/QYZZ_Simulator_16_2.0.0.zip)
 
 ##### 可选
 校验值：
