@@ -92,6 +92,55 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
+// 提供一个兜底的 fetch-rewrite.js（若页面引用了该脚本，不会 404，也不会改变逻辑）
+app.get('/fetch-rewrite.js', (_req, res) => {
+  res.type('application/javascript').send('(function(){/* noop */})();');
+});
+
+// 兼容 Linux 大小写：将 /src/assets/music/*.MP3 映射到同名的 .mp3（若存在）
+app.get(['/src/assets/music/:filename', '/assets/music/:filename'], (req, res, next) => {
+  try {
+    const rawName = String(req.params.filename || '');
+    const safeName = path.basename(rawName); // 防路径穿越
+    const musicDir = path.join(
+      STATIC_DIR || path.join(__dirname, '..', 'frontend_backup'),
+      'src', 'assets', 'music'
+    );
+
+    const candidates = [safeName];
+    if (/\.MP3$/.test(safeName)) candidates.push(safeName.replace(/\.MP3$/, '.mp3'));
+    if (/\.mp3$/.test(safeName)) candidates.push(safeName.replace(/\.mp3$/, '.MP3'));
+
+    for (const name of candidates) {
+      const p = path.join(musicDir, name);
+      if (fs.existsSync(p)) return res.sendFile(p);
+    }
+    return next(); // 交给后续静态或 404 处理
+  } catch (e) {
+    return next();
+  }
+});
+
+// 提供 manifest.json（优先使用仓库中的文件，不存在则返回最小清单）
+app.get('/manifest.json', (_req, res) => {
+  try {
+    const baseDir = STATIC_DIR || path.join(__dirname, '..', 'frontend_backup');
+    const candidates = [
+      path.join(baseDir, 'public', 'manifest.json'),
+      path.join(baseDir, 'manifest.json')
+    ];
+    for (const p of candidates) {
+      if (fs.existsSync(p)) return res.sendFile(p);
+    }
+  } catch (_) {}
+  res.type('application/json').send(JSON.stringify({
+    name: 'QYZZ Simulator',
+    short_name: 'QYZZ',
+    start_url: '/',
+    display: 'standalone'
+  }));
+});
+
 // 列出前端 music 目录下的音频文件
 app.get('/api/music/list', (_req, res) => {
   try {

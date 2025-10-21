@@ -27,7 +27,7 @@
     ],
     "asar": true,
     "win": {
-      "icon": "../assets/16.ico",
+      "icon": "../frontend_backup/assets/16.ico",
       "target": [
         {
           "target": "nsis",
