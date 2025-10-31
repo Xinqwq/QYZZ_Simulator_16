@@ -1,6 +1,6 @@
 # 青云之志算分小助手
 
-一个用于《青云之志》的本地/离线桌面应用，支持完整算分、未来关卡预测、中文大数单位显示，以及多主题外观。提供Windows终端exe可执行文件（Electron）。
+一个用于《青云之志》的桌面应用，支持完整算分、未来关卡预测、中文大数单位显示，以及多主题外观。提供Windows终端exe可执行文件（Electron）。
 
 ---
 
@@ -41,6 +41,7 @@
 ---
 
 ## 📥 下载
+##### 在线版链接：(https://luloria.me/)
 
 ##### Windows zip版：
 青云之志算分小助手[QYZZ_Simulator_16_2.0.0.zip](https://github.com/Xinqwq/QYZZ_Simulator_16/releases/download/v2.0.0/QYZZ_Simulator_16_2.0.0.zip)
